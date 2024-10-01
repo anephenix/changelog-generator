@@ -27,6 +27,7 @@
     "build": "tsc --project tsconfig.json",
     "check-prettier": "prettier src test --check",
     "cover": "cross-env NODE_ENV=test npx nyc --reporter=lcov npm t",
+    "prepare": "husky",
     "prettier": "prettier src test --write",
     "size": "size-limit",
     "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register --extensions ts test/**/* --test",
