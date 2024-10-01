@@ -1,0 +1,62 @@
+{
+  "name": "@anephenix/changelog-generator",
+  "version": "0.0.1",
+  "description": "A utility for generating changelog updates from git history.",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier && npm run build && npm run size && npm test"
+    }
+  },
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "dist/index.js",
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "scripts": {
+    "analyze": "size-limit --why",
+    "build": "tsc --project tsconfig.json",
+    "check-prettier": "prettier src test --check",
+    "cover": "cross-env NODE_ENV=test npx nyc --reporter=lcov npm t",
+    "prettier": "prettier src test --write",
+    "size": "size-limit",
+    "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register --extensions ts test/**/* --test",
+    "watch": "tsc -w"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "10 KB"
+    }
+  ],
+  "keywords": [
+    "changelog"
+  ],
+  "author": "Paul Jensen",
+  "license": "MIT",
+  "devDependencies": {
+    "@size-limit/esbuild-why": "^11.1.6",
+    "@size-limit/preset-small-lib": "^11.1.6",
+    "@types/mocha": "^10.0.8",
+    "@types/node": "^22.7.4",
+    "cross-env": "^7.0.3",
+    "husky": "^9.1.6",
+    "mocha": "^10.7.3",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^17.1.0",
+    "prettier": "^3.3.3",
+    "size-limit": "^11.1.6",
+    "size-limit-node-esbuild": "^0.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  }
+}
