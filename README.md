@@ -1,2 +1,2 @@
 # changelog-generator
-A utility for generating changeling updates from git history
+A utility for generating changelog updates from git history
