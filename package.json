@@ -30,7 +30,7 @@
     "prepare": "husky",
     "prettier": "prettier src test --write",
     "size": "size-limit",
-    "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register --extensions ts test/**/* --test",
+    "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register --extensions ts test/src/* --test",
     "watch": "tsc -w"
   },
   "size-limit": [

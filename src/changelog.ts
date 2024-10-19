@@ -33,7 +33,7 @@ class Changelog {
     currentDate,
     commitMessages,
   }: GenerateNewEntryProps) {
-    return `### ${nextVersion} - ${currentDate}/n/n${commitMessages}`;
+    return `### ${nextVersion} - ${currentDate}\n\n${commitMessages}`;
   }
 }
 
