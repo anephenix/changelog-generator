@@ -5,8 +5,14 @@ import assert from 'assert';
 import { readFileSync, writeFileSync } from 'fs';
 
 describe('Changelog', () => {
-  const originalChangelogPath = path.join(process.cwd(), 'test/data/ORIGINAL_COPY_OF_CHANGELOG.md');
-  const updatedChangelogPath = path.join(process.cwd(), 'test/data/UPDATED_CHANGELOG.md');
+  const originalChangelogPath = path.join(
+    process.cwd(),
+    'test/data/ORIGINAL_COPY_OF_CHANGELOG.md'
+  );
+  const updatedChangelogPath = path.join(
+    process.cwd(),
+    'test/data/UPDATED_CHANGELOG.md'
+  );
   const changelogPath = path.join(process.cwd(), 'test/data/CHANGELOG.md');
   const changelog = new Changelog(changelogPath);
 
@@ -28,7 +34,11 @@ describe('Changelog', () => {
       const nextVersion = '0.0.1';
       const currentDate = 'Wednesday 1st January, 2025';
       const commitMessages = '- Initial commit\n';
-      const newEntry = changelog.generateNewEntry({ nextVersion, currentDate, commitMessages });
+      const newEntry = changelog.generateNewEntry({
+        nextVersion,
+        currentDate,
+        commitMessages,
+      });
       changelog.write(newEntry);
       const expected = readFileSync(updatedChangelogPath, 'utf-8');
       assert.equal(expected, changelog.read());
@@ -36,7 +46,7 @@ describe('Changelog', () => {
 
     after(() => {
       const originalContent = readFileSync(originalChangelogPath, 'utf-8');
-      writeFileSync(changelogPath, originalContent, 'utf-8');      
+      writeFileSync(changelogPath, originalContent, 'utf-8');
     });
   });
 
@@ -46,7 +56,10 @@ describe('Changelog', () => {
       const currentDate = 'Wednesday 1st January, 2025';
       const commitMessages = '- Initial commit\n';
       const expected = `### ${nextVersion} - ${currentDate}\n\n${commitMessages}`;
-      assert.equal(expected, changelog.generateNewEntry({ nextVersion, currentDate, commitMessages }));
+      assert.equal(
+        expected,
+        changelog.generateNewEntry({ nextVersion, currentDate, commitMessages })
+      );
     });
   });
 });

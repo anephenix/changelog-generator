@@ -1,31 +1,33 @@
 // Dependencies
-import { join } from 'path';
 import { formatDateToString } from './date';
 import { VersionReader } from './versionReader';
 import { getCommitMessages } from './history';
 import { Changelog } from './changelog';
 
-const packageJsonPath = join(__dirname, '../package.json');
-const versionReader = new VersionReader(packageJsonPath);
-const previousVersion = versionReader.getPreviousVersion();
-const nextVersion = versionReader.getNextVersion();
+// This bit is the bit that needs to be turned into an E2E test example
 
-// Paths
-const changelogPath = join(__dirname, '../CHANGELOG.md');
-const changeLog = new Changelog(changelogPath);
+// import { join } from 'path';
+// const packageJsonPath = join(__dirname, '../package.json');
+// const versionReader = new VersionReader(packageJsonPath);
+// const previousVersion = await versionReader.getPreviousVersion();
+// const nextVersion = versionReader.getNextVersion();
 
-const commitMessages = getCommitMessages(previousVersion);
-const currentDate = formatDateToString();
+// // Paths
+// const changelogPath = join(__dirname, '../CHANGELOG.md');
+// const changeLog = new Changelog(changelogPath);
 
-// Create new changelog entry
-const newChangelogEntry = changeLog.generateNewEntry({
-  nextVersion,
-  currentDate,
-  commitMessages,
-});
+// const commitMessages = getCommitMessages(previousVersion);
+// const currentDate = formatDateToString();
 
-changeLog.write(newChangelogEntry);
-console.log('CHANGELOG.md updated successfully.');
+// // Create new changelog entry
+// const newChangelogEntry = changeLog.generateNewEntry({
+//   nextVersion,
+//   currentDate,
+//   commitMessages,
+// });
+
+// changeLog.write(newChangelogEntry);
+// console.log('CHANGELOG.md updated successfully.');
 
 interface ChangelogUpdaterProps {
   packageJsonPath: string;
@@ -33,7 +35,7 @@ interface ChangelogUpdaterProps {
 }
 
 class ChangelogUpdater {
-  previousVersion: string;
+  previousVersion: Promise<string>;
   nextVersion: string;
   changelogPath: string;
   changeLog: Changelog;
@@ -46,8 +48,9 @@ class ChangelogUpdater {
     this.changeLog = new Changelog(this.changelogPath);
   }
 
-  update() {
-    const commitMessages = getCommitMessages(this.previousVersion);
+  async update() {
+    const previousVersion = await this.previousVersion;
+    const commitMessages = getCommitMessages(previousVersion);
     const currentDate = formatDateToString();
     const newChangelogEntry = this.changeLog.generateNewEntry({
       nextVersion: this.nextVersion,

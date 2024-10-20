@@ -3,9 +3,11 @@ import { VersionReader } from '../../src/VersionReader';
 import path from 'path';
 import fs from 'fs';
 import assert from 'assert';
+import { saveUrlToFile } from '../utils/saveUrlToFile';
 
-// Seed data for testing
+const url = 'https://registry.npmjs.org/@anephenix/sarus/latest';
 const packageJsonPath = path.join(process.cwd(), 'test/data/package.json');
+saveUrlToFile(url, packageJsonPath);
 const content = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 const versionReader = new VersionReader(packageJsonPath);
 
@@ -20,21 +22,20 @@ describe('VersionReader', () => {
     });
 
     it('should set the currentVersion property', () => {
-      assert.equal(versionReader.currentVersion, '1.0.0');
+      assert.equal(versionReader.currentVersion, '0.6.5');
     });
   });
 
   describe('#getNextVersion', () => {
     it('should return the next version', () => {
-      assert.equal(versionReader.getNextVersion(), '1.0.1');
+      assert.equal(versionReader.getNextVersion(), '0.6.6');
     });
   });
 
   describe('#getPreviousVersion', () => {
-    /*
-      What I think we should do instead is checkout another git repo with tags and use the library against that
-      // in this case, a dummy repo with tags that allow for reading pervious versions
-    */
-    it('should return the previous version');
+    it('should return the previous version', async () => {
+      const previousVersion = await versionReader.getPreviousVersion();
+      assert.equal(previousVersion, '0.6.4');
+    });
   });
 });
