@@ -1,5 +1,5 @@
 // Dependencies
-import { VersionReader } from '../../src/VersionReader';
+import { VersionReader } from '../../src/versionReader';
 import path from 'path';
 import fs from 'fs';
 import assert from 'assert';
@@ -22,20 +22,20 @@ describe('VersionReader', () => {
     });
 
     it('should set the currentVersion property', () => {
-      assert.equal(versionReader.currentVersion, '0.6.5');
+      assert.equal(versionReader.currentVersion, '0.7.8');
     });
   });
 
   describe('#getNextVersion', () => {
     it('should return the next version', () => {
-      assert.equal(versionReader.getNextVersion(), '0.6.6');
+      assert.equal(versionReader.getNextVersion(), '0.7.9');
     });
   });
 
   describe('#getPreviousVersion', () => {
     it('should return the previous version', async () => {
       const previousVersion = await versionReader.getPreviousVersion();
-      assert.equal(previousVersion, '0.6.4');
+      assert.equal(previousVersion, '0.7.7');
     });
   });
 });
