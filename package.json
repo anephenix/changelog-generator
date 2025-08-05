@@ -45,7 +45,7 @@
   "author": "Paul Jensen",
   "license": "MIT",
   "devDependencies": {
-    "@size-limit/esbuild-why": "^11.1.6",
+    "@size-limit/esbuild-why": "^11.2.0",
     "@size-limit/preset-small-lib": "^11.1.6",
     "@types/mocha": "^10.0.8",
     "@types/node": "^22.7.4",
