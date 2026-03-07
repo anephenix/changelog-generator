@@ -2,6 +2,20 @@
 import { readFileSync } from 'fs';
 const https = require('https');
 
+// Types and interfaces
+
+interface PackageInfo {
+  versions: Record<string, any>;
+}
+
+// Helper functions
+
+const getVersionsFromData = (data: string) => {
+  const packageInfo: PackageInfo = JSON.parse(data);
+  const versions: string[] = Object.keys(packageInfo.versions);
+  return versions;
+}
+
 class VersionReader {
   packageJsonPath: string;
   packageJson: any;
@@ -24,9 +38,6 @@ class VersionReader {
     const packageName: string = this.packageJson.name;
     const url = `https://registry.npmjs.org/${packageName}`;
     return new Promise((resolve, reject) => {
-      interface PackageInfo {
-        versions: Record<string, any>;
-      }
 
       https
         .get(url, (res: any) => {
@@ -40,8 +51,7 @@ class VersionReader {
           // The whole response has been received.
           res.on('end', () => {
             try {
-              const packageInfo: PackageInfo = JSON.parse(data);
-              const versions: string[] = Object.keys(packageInfo.versions);
+              const versions = getVersionsFromData(data);
               resolve(versions);
             } catch (error) {
               reject('Error parsing JSON');
