@@ -4,7 +4,7 @@
   "description": "A utility for generating changelog updates from git history.",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run prettier && npm run build && npm run size && npm test"
+      "pre-commit": "npm run format && npm run build && npm run size && npm test"
     }
   },
   "typings": "dist/index.d.ts",
@@ -16,21 +16,15 @@
     "node": ">=20"
   },
   "main": "dist/index.js",
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
   "scripts": {
     "analyze": "size-limit --why",
     "build": "tsc --project tsconfig.json",
-    "check-prettier": "prettier src test --check",
     "cover": "cross-env NODE_ENV=test npx nyc --reporter=lcov npm t",
+    "format": "npx @biomejs/biome check src test --write",
+    "lint": "npx @biomejs/biome check src test",
     "prepare": "husky",
-    "prettier": "prettier src test --write",
     "size": "size-limit",
-    "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register --extensions ts test/src/* --test",
+    "test": "cross-env NODE_ENV=test vitest --run",
     "watch": "tsc -w"
   },
   "size-limit": [
@@ -45,19 +39,17 @@
   "author": "Paul Jensen",
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@size-limit/esbuild-why": "^11.1.6",
     "@size-limit/preset-small-lib": "^11.1.6",
-    "@types/mocha": "^10.0.8",
     "@types/node": "^22.7.4",
+    "@vitest/coverage-v8": "^2.0.0",
     "cross-env": "^7.0.3",
     "husky": "^9.1.6",
-    "mocha": "^10.7.3",
-    "mocha-lcov-reporter": "^1.3.0",
-    "nyc": "^17.1.0",
-    "prettier": "^3.3.3",
     "size-limit": "^11.1.6",
     "size-limit-node-esbuild": "^0.3.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "vitest": "^2.0.0"
   }
 }

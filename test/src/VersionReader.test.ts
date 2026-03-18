@@ -1,41 +1,45 @@
+import assert from "node:assert";
+import fs from "node:fs";
+import path from "node:path";
 // Dependencies
-import { VersionReader } from '../../src/VersionReader';
-import path from 'path';
-import fs from 'fs';
-import assert from 'assert';
-import { saveUrlToFile } from '../utils/saveUrlToFile';
+import { VersionReader } from "../../src/VersionReader";
+import { saveUrlToFile } from "../utils/saveUrlToFile";
 
-const url = 'https://registry.npmjs.org/@anephenix/sarus/latest';
-const packageJsonPath = path.join(process.cwd(), 'test/data/package.json');
+const url = "https://registry.npmjs.org/@anephenix/sarus/latest";
+const packageJsonPath = path.join(process.cwd(), "test/data/package.json");
 saveUrlToFile(url, packageJsonPath);
-const content = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+const content = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
 const versionReader = new VersionReader(packageJsonPath);
 
-describe('VersionReader', () => {
-  describe('constructor', () => {
-    it('should set the packageJsonPath property', () => {
-      assert.equal(versionReader.packageJsonPath, packageJsonPath);
-    });
+const [major, minor, patch] = content.version.split(".").map(Number);
+const nextVersion = `${major}.${minor}.${patch + 1}`;
+const previousVersion = `${major}.${minor}.${patch - 1}`;
 
-    it('should set the packageJson property', () => {
-      assert.deepEqual(versionReader.packageJson, content);
-    });
+describe("VersionReader", () => {
+	describe("constructor", () => {
+		it("should set the packageJsonPath property", () => {
+			assert.equal(versionReader.packageJsonPath, packageJsonPath);
+		});
 
-    it('should set the currentVersion property', () => {
-      assert.equal(versionReader.currentVersion, '0.6.5');
-    });
-  });
+		it("should set the packageJson property", () => {
+			assert.deepEqual(versionReader.packageJson, content);
+		});
 
-  describe('#getNextVersion', () => {
-    it('should return the next version', () => {
-      assert.equal(versionReader.getNextVersion(), '0.6.6');
-    });
-  });
+		it("should set the currentVersion property", () => {
+			assert.equal(versionReader.currentVersion, content.version);
+		});
+	});
 
-  describe('#getPreviousVersion', () => {
-    it('should return the previous version', async () => {
-      const previousVersion = await versionReader.getPreviousVersion();
-      assert.equal(previousVersion, '0.6.4');
-    });
-  });
+	describe("#getNextVersion", () => {
+		it("should return the next version", () => {
+			assert.equal(versionReader.getNextVersion(), nextVersion);
+		});
+	});
+
+	describe("#getPreviousVersion", () => {
+		it("should return the previous version", async () => {
+			const result = await versionReader.getPreviousVersion();
+			assert.equal(result, previousVersion);
+		});
+	});
 });

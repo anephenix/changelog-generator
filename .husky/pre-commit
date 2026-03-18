@@ -1,1 +1,1 @@
-npm run prettier && npm run build && npm run size && npm test
+npm run lint && npm run build && npm run size && npm test
